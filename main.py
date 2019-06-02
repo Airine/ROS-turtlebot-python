@@ -36,17 +36,17 @@ mms = None
 class Movements():
     
     def __init__(self):
+        self.moving = False
+        self.move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
+        self.moves = []
+        self.times = []
+        self.init_cmds()
         rospy.init_node('Movements', anonymous=False)
         rospy.Subscriber('chatter', String, self.callback)
         # rospy.loginfo("To stop TurtleBot CTRL + C")
         rospy.on_shutdown(self.shutdown)
         self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.r = rospy.Rate(10) # 10Hz = 0.1s
-        # rospy.spin()
-        self.moving = False
-        self.move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
-        self.moves = []
-        self.times = []
         rospy.loginfo("Start Running")
         while not rospy.is_shutdown():
             if not self.moving:
