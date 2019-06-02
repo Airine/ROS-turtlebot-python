@@ -16,7 +16,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 '''
 
 import rospy
-from geometry_msgs.msg import Twist, String
+from geometry_msgs.msg import Twist
+from std_msgs.msg import String
 from math import radians
 
 mms = None
