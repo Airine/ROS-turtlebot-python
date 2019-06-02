@@ -42,7 +42,7 @@ class Movements():
         rospy.on_shutdown(self.shutdown)
         self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.r = rospy.Rate(10) # 10Hz = 0.1s
-        rospy.spin()
+        # rospy.spin()
         rospy.loginfo("Start Running")
         while not rospy.is_shutdown():
             if not moving:
