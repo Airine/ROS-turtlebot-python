@@ -27,7 +27,7 @@ mms = None
 # move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
 # moves = []
 # times = []
-# 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 3: tri_move, 4: tri_turn, 5: rotate
+# 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 4: tri_move, 5: tri_turn, 6: rotate
         # for i in range(times(0)):
             # while rospy.is_shutdown():
             #     mms.cmd_vel.publish(moves[0])
@@ -48,11 +48,12 @@ class Movements():
         self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.r = rospy.Rate(10) # 10Hz = 0.1s
         while not rospy.is_shutdown():
-            rospy.loginfo("Start Running")
+            rospy.loginfo("Waiting for msg...")
             if not self.moving:
                 self.cmd_vel.publish(self.moves[0])
                 self.r.sleep()
             else:
+                rospy.loginfo("Movement started.")
                 if self.move_state == 1:
                     for i in range(0, self.times[1]):
                         self.cmd_vel.publish(self.moves[1])
@@ -65,8 +66,20 @@ class Movements():
                         for k in range(0, self.times[3]):
                             self.cmd_vel.publish(self.moves[3])
                             self.r.sleep()
-                # if move_state == 3:
+                elif self.move_state == 3:
+                    for i in range(0, 3):
+                        for j in range(0, self.times[4]):
+                            self.cmd_vel.publish(self.moves[4])
+                            self.r.sleep()
+                        for k in range(0, self.times[5]):
+                            self.cmd_vel.publish(self.moves[5])
+                            self.r.sleep()
+                elif self.move_state == 4:
+                    for i in range(0, self.times[6]):
+                        self.cmd_vel.publish(self.moves[6])
+                        self.r.sleep()
                 self.moving = False
+                rospy.loginfo("Movement ended.")
         # rospy.spin()
 
     def init_cmds(self):
@@ -107,9 +120,9 @@ class Movements():
 
         rotate_cmd = Twist()
         rotate_cmd.linear.x = 0
-        rotate_cmd.angular.z = 0.5 # radians/s
+        rotate_cmd.angular.z = radians(60) # radians/s
         self.moves.append(rotate_cmd)
-        self.times.append(20)
+        self.times.append(60)
 
     def shutdown(self):
         rospy.loginfo("Stop TurtleBot")
@@ -118,9 +131,19 @@ class Movements():
 
     def callback(self, data):
         rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-        if data.data == 'test':
+        if data.data == 'circle':
+            self.moving = True
+            self.move_state = 1
+        elif data.data == 'dou':
             self.moving = True
             self.move_state = 2
+        elif data.data == 'tri':
+            self.moving = True
+            self.move_state = 3
+        elif data.data == 'rotate':
+            self.moving = True
+            self.move_state = 4
+
 
 if __name__ == "__main__":
     # try:
