@@ -73,7 +73,7 @@ class Movements():
         stand_cmd = Twist()
         stand_cmd.linear.x = 0
         stand_cmd.angular.z = 0
-        self.moves.append(circle_cmd)
+        self.moves.append(stand_cmd)
         self.times.append(0)
 
         circle_cmd = Twist()
