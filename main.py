@@ -51,20 +51,20 @@ class Movements():
         while not rospy.is_shutdown():
             if not self.moving:
                 self.cmd_vel.publish(self.moves[self.move_state])
-                r. sleep()
+                self.r.sleep()
             else:
                 if self.move_state == 1:
                     for i in range(0, self.times[1]):
                         self.cmd_vel.publish(self.moves[1])
-                        r.sleep()
+                        self.r.sleep()
                 elif self.move_state == 2:
                     for i in range(0, 30):
                         for j in range(0, self.times[2]):
                             self.cmd_vel.publish(self.moves[2])
-                            r.sleep()
+                            self.r.sleep()
                         for k in range(0, self.times[3]):
                             self.cmd_vel.publish(self.moves[3])
-                            r.sleep()
+                            self.r.sleep()
                 # if move_state == 3:
                 self.moving = False
         # rospy.spin()
