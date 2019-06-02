@@ -39,6 +39,6 @@ if __name__ == '__main__':
             rate.sleep()
     except rospy.ROSInterruptException as e:
         print(e)
-    finally:
-        pub.publish('nothing')
-        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    # finally:
+    #     pub.publish('nothing')
+    #     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
