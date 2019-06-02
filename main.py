@@ -120,7 +120,7 @@ class Movements():
 
         rotate_cmd = Twist()
         rotate_cmd.linear.x = 0
-        rotate_cmd.angular.z = 1.5 # radians/s
+        rotate_cmd.angular.z = radians(60) # radians/s
         self.moves.append(rotate_cmd)
         self.times.append(60)
 
