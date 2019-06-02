@@ -119,7 +119,7 @@ class Movements():
             move_state = 1
 
 if __name__ == "__main__":
-    try:
-        mms = Movements()
-    except:
-        rospy.loginfo("Movements node terminated.")
+    # try:
+    mms = Movements()
+    # except:
+        # rospy.loginfo("Movements node terminated.")
