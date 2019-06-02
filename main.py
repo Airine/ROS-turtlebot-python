@@ -37,7 +37,7 @@ class Movements():
     
     def __init__(self):
         self.moving = False
-        self.move_state = 2 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
+        self.move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
         self.moves = []
         self.times = []
         self.init_cmds()
@@ -50,7 +50,7 @@ class Movements():
         while not rospy.is_shutdown():
             rospy.loginfo("Start Running")
             if not self.moving:
-                self.cmd_vel.publish(self.moves[self.move_state])
+                self.cmd_vel.publish(self.moves[0])
                 self.r.sleep()
             else:
                 if self.move_state == 1:
