@@ -50,7 +50,7 @@ class Movements():
         rospy.loginfo("Start Running")
         while not rospy.is_shutdown():
             if not self.moving:
-                self.cmd_vel.publish(moves[move_state])
+                self.cmd_vel.publish(self.moves[move_state])
                 r. sleep()
             else:
                 if move_state == 1:
