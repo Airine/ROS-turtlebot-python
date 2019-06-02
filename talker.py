@@ -8,9 +8,10 @@ import termios
 import tty
 
 commands = {
-    'q': 'str',
-    'w': 'str',
-    't': 'test'
+    'q': 'circle',
+    'w': 'dou',
+    'e': 'tri',
+    'r': 'rotate'
 }
 
 
