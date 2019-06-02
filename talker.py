@@ -22,24 +22,29 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
+
 def shutdown():
     rospy.loginfo("Stop Talker")
     rospy.sleep(1)
 
 
 if __name__ == '__main__':
-    settings = termios.tcgetattr(sys.stdin)
-    pub = rospy.Publisher('chatter', String, queue_size=1)
-    rospy.init_node('talker', anonymous=True)
-    rospy.on_shutdown(shutdown)
-    rate = rospy.Rate(10) # 10hz
-    
-    while not rospy.is_shutdown():
-        key = getKey()
-        if key in commands.keys():
-            cmd = commands[key]
-        else:
-            cmd = 'nothing'
-        print(cmd)
-        pub.publish(cmd)
-        rate.sleep()
+    try:
+        settings = termios.tcgetattr(sys.stdin)
+        pub = rospy.Publisher('chatter', String, queue_size=1)
+        rospy.init_node('talker', anonymous=True)
+        rospy.on_shutdown(shutdown)
+        rate = rospy.Rate(10)  # 10hz
+
+        while not rospy.is_shutdown():
+            key = getKey()
+            if key in commands.keys():
+                cmd = commands[key]
+            else:
+                cmd = 'nothing'
+            print(cmd)
+            pub.publish(cmd)
+            rate.sleep()
+            
+    except rospy.ROSInterruptException as e:
+        print(e)
