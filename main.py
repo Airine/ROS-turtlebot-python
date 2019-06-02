@@ -23,10 +23,10 @@ from math import radians
 mms = None
 
 # curr_cmd_idx = 0 # Current command index
-moving = False
-move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
-moves = []
-times = []
+# moving = False
+# move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
+# moves = []
+# times = []
 # 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 3: tri_move, 4: tri_turn, 5: rotate
         # for i in range(times(0)):
             # while rospy.is_shutdown():
@@ -43,69 +43,73 @@ class Movements():
         self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.r = rospy.Rate(10) # 10Hz = 0.1s
         # rospy.spin()
+        self.moving = False
+        self.move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
+        self.moves = []
+        self.times = []
         rospy.loginfo("Start Running")
         while not rospy.is_shutdown():
-            if not moving:
+            if not self.moving:
                 self.cmd_vel.publish(moves[move_state])
                 r. sleep()
             else:
                 if move_state == 1:
-                    for i in range(0, times[1]):
-                        self.cmd_vel.publish(moves[1])
+                    for i in range(0, self.times[1]):
+                        self.cmd_vel.publish(self.moves[1])
                         r.sleep()
                 elif move_state == 2:
                     for i in range(0, 30):
-                        for j in range(0, times[2]):
-                            self.cmd_vel.publish(moves[2])
+                        for j in range(0, self.times[2]):
+                            self.cmd_vel.publish(self.moves[2])
                             r.sleep()
-                        for k in range(0, times[3]):
-                            self.cmd_vel.publish(moves[3])
+                        for k in range(0, self.times[3]):
+                            self.cmd_vel.publish(self.moves[3])
                             r.sleep()
                 # if move_state == 3:
-                moving = False
+                self.moving = False
         # rospy.spin()
 
-    def init_cmds():
+    def init_cmds(self):
         stand_cmd = Twist()
         stand_cmd.linear.x = 0
         stand_cmd.angular.z = 0
-        moves.append(circle_cmd)
-        times.append(0)
+        self.moves.append(circle_cmd)
+        self.times.append(0)
 
         circle_cmd = Twist()
         circle_cmd.linear.x = 0.2
         circle_cmd.angular.z = 0.5
-        moves.append(circle_cmd)
-        times.append(30)
+        self.moves.append(circle_cmd)
+        self.times.append(30)
 
         cxk_left = Twist()
         cxk_left.linear.x = 0
         cxk_left.angular.z = 1
-        moves.append(cxk_left)
-        times.append(2)
+        self.moves.append(cxk_left)
+        self.times.append(2)
 
         cxk_right = Twist()
         cxk_right.linear.x = 0
         cxk_right.angular.z = -1
-        moves.append(cxk_right)
-        times.append(2)
+        self.moves.append(cxk_right)
+        self.times.append(2)
         
         tri_move = Twist()
         tri_move.linear.x = 0.2
-        moves.append(tri_move)
-        times.append(10)
+        self.moves.append(tri_move)
+        self.times.append(10)
 
         tri_turn = Twist()
         tri_turn.linear.x = 0
         tri_turn.angular.z = radians(60)
-        moves.append(tri_turn)
-        times.append(20)
+        self.moves.append(tri_turn)
+        self.times.append(20)
 
         rotate_cmd = Twist()
         rotate_cmd.linear.x = 0
         rotate_cmd.angular.z = 0.5 # radians/s
-        moves.append(rotate_cmd)
-        times.append(20)
+        self.moves.append(rotate_cmd)
+        self.times.append(20)
 
     def shutdown(self):
         rospy.loginfo("Stop TurtleBot")
