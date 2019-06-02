@@ -21,17 +21,22 @@ from math import radians
 
 mms = None
 
+# curr_cmd_idx = 0 # Current command index
+moving = False
+move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
 moves = []
 times = []
-# 0: rotate, 1: go_circle, 2: cxk_left, 3: cxk_right, 3: tri_move, 4: tri_turn
+# 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 3: tri_move, 4: tri_turn, 5: rotate
 
 def callback(data):
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
     if data.data == 'test':
-        for i in range(times(0)):
-            while rospy.is_shutdown():
-                mms.cmd_vel.publish(moves[0])
-                mms.r.sleep()
+        moving = True
+        move_state = 1
+        # for i in range(times(0)):
+            # while rospy.is_shutdown():
+            #     mms.cmd_vel.publish(moves[0])
+            #     mms.r.sleep()
 
 class Movements():
     
@@ -42,15 +47,33 @@ class Movements():
         rospy.on_shutdown(self.shutdown)
         self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.r = rospy.Rate(10) # 10Hz = 0.1s
-        rospy.spin()
-        
+
+        while not rospy.is_shutdown():
+            if not moving:
+                self.cmd_vel.publish(moves[move_state])
+                r. sleep()
+            else:
+                if move_state == 1:
+                    for i in range(0, times[1]):
+                        self.cmd_vel.publish(moves[1])
+                        r.sleep()
+                elif move_state == 2:
+                    for i in range(0, 30):
+                        for j in range(0, times[2]):
+                            self.cmd_vel.publish(moves[2])
+                            r.sleep()
+                        for k in range(0, times[3]):
+                            self.cmd_vel.publish(moves[3])
+                            r.sleep()
+                # if move_state == 3:
+        # rospy.spin()
 
     def init_cmds():
-        rotate_cmd = Twist()
-        rotate_cmd.linear.x = 0
-        rotate_cmd.angular.z = 0.5 # radians/s
-        moves.append(rotate_cmd)
-        times.append(20)
+        stand_cmd = Twist()
+        stand_cmd.linear.x = 0
+        stand_cmd.angular.z = 0
+        moves.append(circle_cmd)
+        times.append(0)
 
         circle_cmd = Twist()
         circle_cmd.linear.x = 0.2
@@ -79,6 +102,12 @@ class Movements():
         tri_turn.linear.x = 0
         tri_turn.angular.z = radians(60)
         moves.append(tri_turn)
+        times.append(20)
+
+        rotate_cmd = Twist()
+        rotate_cmd.linear.x = 0
+        rotate_cmd.angular.z = 0.5 # radians/s
+        moves.append(rotate_cmd)
         times.append(20)
 
     def shutdown(self):
