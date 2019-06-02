@@ -33,18 +33,13 @@ if __name__ == '__main__':
     rospy.init_node('talker', anonymous=True)
     rospy.on_shutdown(shutdown)
     rate = rospy.Rate(10) # 10hz
-    try:
-        while not rospy.is_shutdown():
-            key = getKey()
-            if key in commands.keys():
-                cmd = commands[key]
-            else:
-                cmd = 'nothing'
-            print(cmd)
-            pub.publish(cmd)
-            rate.sleep()
-    except rospy.ROSInterruptException as e:
-        print(e)
-    # finally:
-    #     pub.publish('nothing')
-    #     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    
+    while not rospy.is_shutdown():
+        key = getKey()
+        if key in commands.keys():
+            cmd = commands[key]
+        else:
+            cmd = 'nothing'
+        print(cmd)
+        pub.publish(cmd)
+        rate.sleep()
