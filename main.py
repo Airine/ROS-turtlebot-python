@@ -119,8 +119,8 @@ class Movements():
     def callback(self, data):
         rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
         if data.data == 'test':
-            moving = True
-            move_state = 1
+            self.moving = True
+            self.move_state = 1
 
 if __name__ == "__main__":
     # try:
