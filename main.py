@@ -28,12 +28,6 @@ move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
 moves = []
 times = []
 # 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 3: tri_move, 4: tri_turn, 5: rotate
-
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    if data.data == 'test':
-        moving = True
-        move_state = 1
         # for i in range(times(0)):
             # while rospy.is_shutdown():
             #     mms.cmd_vel.publish(moves[0])
@@ -43,12 +37,12 @@ class Movements():
     
     def __init__(self):
         rospy.init_node('Movements', anonymous=False)
-        rospy.Subscriber('chatter', String, callback)
+        rospy.Subscriber('chatter', String, self.callback)
         # rospy.loginfo("To stop TurtleBot CTRL + C")
         rospy.on_shutdown(self.shutdown)
         self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.r = rospy.Rate(10) # 10Hz = 0.1s
-
+        rospy.spin()
         while not rospy.is_shutdown():
             if not moving:
                 self.cmd_vel.publish(moves[move_state])
@@ -67,6 +61,7 @@ class Movements():
                             self.cmd_vel.publish(moves[3])
                             r.sleep()
                 # if move_state == 3:
+                moving = False
         # rospy.spin()
 
     def init_cmds():
@@ -115,6 +110,12 @@ class Movements():
         rospy.loginfo("Stop TurtleBot")
         self.cmd_vel.publish(Twist())
         rospy.sleep(1)
+
+    def callback(self, data):
+        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+        if data.data == 'test':
+            moving = True
+            move_state = 1
 
 if __name__ == "__main__":
     try:
