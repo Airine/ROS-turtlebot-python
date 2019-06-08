@@ -93,7 +93,7 @@ class Movements():
         circle_cmd.linear.x = 0.2
         circle_cmd.angular.z = 1.04
         self.moves.append(circle_cmd)
-        self.times.append(80)
+        self.times.append(70)
 
         cxk_left = Twist()
         cxk_left.linear.x = 0
@@ -108,13 +108,13 @@ class Movements():
         self.times.append(2)
         
         tri_move = Twist()
-        tri_move.linear.x = 0.2
+        tri_move.linear.x = 0.3
         self.moves.append(tri_move)
-        self.times.append(10)
+        self.times.append(20)
 
         tri_turn = Twist()
         tri_turn.linear.x = 0
-        tri_turn.angular.z = radians(60)
+        tri_turn.angular.z = radians(75)
         self.moves.append(tri_turn)
         self.times.append(20)
 
