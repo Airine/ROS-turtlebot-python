@@ -122,7 +122,7 @@ class Movements():
         rotate_cmd.linear.x = 0
         rotate_cmd.angular.z = 1.04
         self.moves.append(rotate_cmd)
-        self.times.append(60)
+        self.times.append(80)
 
     def shutdown(self):
         rospy.loginfo("Stop TurtleBot")
