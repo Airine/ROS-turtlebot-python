@@ -91,9 +91,9 @@ class Movements():
 
         circle_cmd = Twist()
         circle_cmd.linear.x = 0.2
-        circle_cmd.angular.z = 0.5
+        circle_cmd.angular.z = 1.04
         self.moves.append(circle_cmd)
-        self.times.append(30)
+        self.times.append(80)
 
         cxk_left = Twist()
         cxk_left.linear.x = 0
