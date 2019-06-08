@@ -1,9 +1,41 @@
-## A "getting started" guide for developers interested in robotics
+# IR Project
 
-[Learn TurtleBot] (http://learn.turtlebot.com/) is an open source getting started guide for web, mobile and maker developers interested in robotics.
+## Usage
 
-[Go to the tutorials] (http://learn.turtlebot.com/)
+```bash
+git clone https://github.com/Airine/ROS-turtlebot-python.git
+or
+wget https://github.com/Airine/ROS-turtlebot-python/archive/master.zip
+```
+### 1. Run ROS
 
-### Web App
+```bash
+roslaunch turtlebot_bringup minimal.launch
+```
 
-This repository includes scripts used in the tutorial series.
+*Do not run other movement controller (like keyborad)*
+
+### 2. Run talker
+
+```bash
+python talker.py
+```
+
+This [talker.py](./talker.py) register a ros node "chatter", and it would set msgs to those ros nodes who subscribes it (like [main.py](./main.py)).
+
+And if you type keys below, the `chatter` would set corresponding msg below.
+
+```python
+commands = {
+    'q': 'circle',
+    'w': 'dou',
+    'e': 'tri',
+    'r': 'rotate'
+}
+```
+
+### 3. Run main.py
+
+```bash
+python main.py
+```
