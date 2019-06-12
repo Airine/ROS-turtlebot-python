@@ -28,6 +28,7 @@ mms = None
 # moves = []
 # times = []
 # 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 4: tri_move, 5: tri_turn, 6: rotate, 7: go_straight, 8: turn_half
+# 9: right_45, 10: reverse_45, 11: left_45, 12: rleft_45
         # for i in range(times(0)):
             # while rospy.is_shutdown():
             #     mms.cmd_vel.publish(moves[0])
@@ -72,6 +73,8 @@ class Movements():
                     self.do_cmd(8)
                     self.do_cmd(7)
                     self.do_cmd(8)
+                elif self.move_state == 7:
+                    self.dance()
                 self.moving = False
                 rospy.loginfo("Movement ended.")
         # rospy.spin()
@@ -80,7 +83,21 @@ class Movements():
         for i in range(0, self.times[move]):
             self.cmd_vel.publish(self.moves[move])
             self.r.sleep()
-        pass
+    
+    def dance(self):
+        self.do_cmd(9)
+        self.do_cmd(10)
+        self.do_cmd(11)
+        self.do_cmd(12)
+        for i in range(0, 15):
+            self.do_cmd(2)
+            self.do_cmd(3)
+        self.do_cmd(6)
+        for i in range(0, 15):
+            self.do_cmd(2)
+            self.do_cmd(3)
+        self.do_cmd(1)
+
 
     def init_cmds(self):
         stand_cmd = Twist()
@@ -134,6 +151,30 @@ class Movements():
         half_turn.angular.z = radians(75)
         self.moves.append(half_turn)
         self.times.append(10)
+
+        right_45 = Twist()
+        right_45.linear.x = 0.25
+        right_45.angular.z = 1.5
+        self.moves.append(right_45)
+        self.times.append(20)
+
+        reverse_45 = Twist()
+        reverse_45.linear.x = -0.25
+        reverse_45.angular.z = -1.5
+        self.moves.append(reverse_45)
+        self.times.append(20)
+
+        left_45 = Twist()
+        left_45.linear.x = 0.25
+        left_45.angular.z = -1.5
+        self.moves.append(left_45)
+        self.times.append(20)
+
+        lreverse_45 = Twist()
+        lreverse_45.linear.x = -0.25
+        lreverse_45.angular.z = 1.5
+        self.moves.append(lreverse_45)
+        self.times.append(20)
 
     def shutdown(self):
         rospy.loginfo("Stop TurtleBot")
