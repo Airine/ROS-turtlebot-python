@@ -89,19 +89,19 @@ class Movements():
         self.do_cmd(10)
         self.do_cmd(11)
         self.do_cmd(12)
-        for i in range(0, 15):
+        for i in range(0, 8):
             self.do_cmd(2)
             self.do_cmd(3)
         self.do_cmd(6)
-        for i in range(0, 15):
+        for i in range(0, 8):
             self.do_cmd(2)
             self.do_cmd(3)
-        self.do_cmd(1)
+        self.move_func(0, 4, 80)
         self.move_func(0.3, 0, 10)
         self.move_func(-0.3, 0, 10)
         # self.do_cmd(0)
-        self.move_func(0, 0, 80)
-        self.move_func(0.2, 2, 80)
+        self.move_func(0, 0, 40)
+        self.move_func(0, 4, 80)
 
     def move_func(self, v, w, t):
         tempt_cmd = Twist()
