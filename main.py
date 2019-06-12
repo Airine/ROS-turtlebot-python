@@ -56,40 +56,22 @@ class Movements():
                 rospy.loginfo("Movement started.")
                 if self.move_state == 1:
                     self.do_cmd(1)
-                    # for i in range(0, self.times[1]):
-                    #     self.cmd_vel.publish(self.moves[1])
-                    #     self.r.sleep()
                 elif self.move_state == 2:
                     for i in range(0, 30):
-                        for j in range(0, self.times[2]):
-                            self.cmd_vel.publish(self.moves[2])
-                            self.r.sleep()
-                        for k in range(0, self.times[3]):
-                            self.cmd_vel.publish(self.moves[3])
-                            self.r.sleep()
+                        self.do_cmd(2)
+                        self.do_cmd(3)
                 elif self.move_state == 3:
                     for i in range(0, 3):
-                        for j in range(0, self.times[4]):
-                            self.cmd_vel.publish(self.moves[4])
-                            self.r.sleep()
-                        for k in range(0, self.times[5]):
-                            self.cmd_vel.publish(self.moves[5])
-                            self.r.sleep()
+                        self.do_cmd(4)
+                        self.do_cmd(5)
                 elif self.move_state == 4:
                     self.do_cmd(6)
-                    # for i in range(0, self.times[6]):
-                    #     self.cmd_vel.publish(self.moves[6])
-                    #     self.r.sleep()
                 elif self.move_state == 5:
-                    for i in range(0, self.times[7]):
-                        self.cmd_vel.publish(self.moves[7])
-                        self.r.sleep()
-                    pass
+                    self.do_cmd(7)
                 elif self.move_state == 6:
-                    for i in range(0, self.times[7]):
-                        self.cmd_vel.publish(self.moves[7])
-                        self.r.sleep()
-                    pass
+                    self.do_cmd(8)
+                    self.do_cmd(7)
+                    self.do_cmd(8)
                 self.moving = False
                 rospy.loginfo("Movement ended.")
         # rospy.spin()
@@ -172,6 +154,12 @@ class Movements():
         elif data.data == 'rotate':
             self.moving = True
             self.move_state = 4
+        elif data.data == 'go':
+            self.moving = True
+            self.move_state = 5
+        elif data.data == 'back':
+            self.moving = True
+            self.move_state = 6
 
 
 if __name__ == "__main__":

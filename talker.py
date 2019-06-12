@@ -11,7 +11,9 @@ commands = {
     'q': 'circle',
     'w': 'dou',
     'e': 'tri',
-    'r': 'rotate'
+    'r': 'rotate',
+    't': 'go',
+    'y': 'back'
 }
 
 
