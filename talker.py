@@ -13,7 +13,8 @@ commands = {
     'e': 'tri',
     'r': 'rotate',
     't': 'go',
-    'y': 'back'
+    'y': 'back',
+    'd': 'dance'
 }
 
 

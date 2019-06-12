@@ -97,7 +97,19 @@ class Movements():
             self.do_cmd(2)
             self.do_cmd(3)
         self.do_cmd(1)
+        self.move_func(0.3, 0, 10)
+        self.move_func(-0.3, 0, 10)
+        # self.do_cmd(0)
+        self.move_func(0, 0, 80)
+        self.move_func(0.2, 2, 80)
 
+    def move_func(self, v, w, t):
+        tempt_cmd = Twist()
+        tempt_cmd.linear.x = v
+        tempt_cmd.angular.z = w
+        for i in range(0, t):
+            self.cmd_vel.publish(tempt_cmd)
+            self.r.sleep()
 
     def init_cmds(self):
         stand_cmd = Twist()
@@ -201,7 +213,9 @@ class Movements():
         elif data.data == 'back':
             self.moving = True
             self.move_state = 6
-
+        elif data.data == 'dance':
+            self.moving = True
+            self.move_state = 7
 
 if __name__ == "__main__":
     # try:
