@@ -131,9 +131,9 @@ class Movements():
 
         half_turn = Twist()
         half_turn.linear.x = 0
-        half_turn.angular.z = radians(75)
+        half_turn.angular.z = 1.04
         self.moves.append(half_turn)
-        self.times.append(10)
+        self.times.append(40)
 
     def shutdown(self):
         rospy.loginfo("Stop TurtleBot")
