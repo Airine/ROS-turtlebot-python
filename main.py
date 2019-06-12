@@ -55,7 +55,7 @@ class Movements():
             else:
                 rospy.loginfo("Movement started.")
                 if self.move_state == 1:
-                    do_cmd(1)
+                    self.do_cmd(1)
                     # for i in range(0, self.times[1]):
                     #     self.cmd_vel.publish(self.moves[1])
                     #     self.r.sleep()
@@ -76,9 +76,10 @@ class Movements():
                             self.cmd_vel.publish(self.moves[5])
                             self.r.sleep()
                 elif self.move_state == 4:
-                    for i in range(0, self.times[6]):
-                        self.cmd_vel.publish(self.moves[6])
-                        self.r.sleep()
+                    self.do_cmd(6)
+                    # for i in range(0, self.times[6]):
+                    #     self.cmd_vel.publish(self.moves[6])
+                    #     self.r.sleep()
                 elif self.move_state == 5:
                     for i in range(0, self.times[7]):
                         self.cmd_vel.publish(self.moves[7])
