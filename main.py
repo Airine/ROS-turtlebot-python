@@ -29,16 +29,17 @@ mms = None
 # times = []
 # 0: stand, 1: go_circle, 2: cxk_left, 3: cxk_right, 4: tri_move, 5: tri_turn, 6: rotate, 7: go_straight, 8: turn_half
 # 9: right_45, 10: reverse_45, 11: left_45, 12: rleft_45
-        # for i in range(times(0)):
-            # while rospy.is_shutdown():
-            #     mms.cmd_vel.publish(moves[0])
-            #     mms.r.sleep()
+# for i in range(times(0)):
+# while rospy.is_shutdown():
+#     mms.cmd_vel.publish(moves[0])
+#     mms.r.sleep()
+
 
 class Movements():
-    
+
     def __init__(self):
         self.moving = False
-        self.move_state = 0 # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
+        self.move_state = 0  # 0: stand, 1: go_circle, 2: cxk, 3: tri, 4:rotate
         self.moves = []
         self.times = []
         self.init_cmds()
@@ -46,8 +47,9 @@ class Movements():
         rospy.Subscriber('chatter', String, self.callback)
         # rospy.loginfo("To stop TurtleBot CTRL + C")
         rospy.on_shutdown(self.shutdown)
-        self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
-        self.r = rospy.Rate(10) # 10Hz = 0.1s
+        self.cmd_vel = rospy.Publisher(
+            'cmd_vel_mux/input/navi', Twist, queue_size=10)
+        self.r = rospy.Rate(10)  # 10Hz = 0.1s
         while not rospy.is_shutdown():
             rospy.loginfo("Waiting for msg...")
             if not self.moving:
@@ -58,7 +60,7 @@ class Movements():
                 if self.move_state == 1:
                     self.do_cmd(1)
                 elif self.move_state == 2:
-                    for i in range(0, 30):
+                    for i in range(0, 6):
                         self.do_cmd(2)
                         self.do_cmd(3)
                 elif self.move_state == 3:
@@ -75,6 +77,8 @@ class Movements():
                     self.do_cmd(8)
                 elif self.move_state == 7:
                     self.dance()
+                elif self.move_state in (8, 9, 10, 11):
+                    self.do_cmd(self.move_state+1)
                 self.moving = False
                 rospy.loginfo("Movement ended.")
         # rospy.spin()
@@ -83,7 +87,7 @@ class Movements():
         for i in range(0, self.times[move]):
             self.cmd_vel.publish(self.moves[move])
             self.r.sleep()
-    
+
     def dance(self):
         self.do_cmd(9)
         self.do_cmd(10)
@@ -126,16 +130,16 @@ class Movements():
 
         cxk_left = Twist()
         cxk_left.linear.x = 0
-        cxk_left.angular.z = 1
+        cxk_left.angular.z = 0.8
         self.moves.append(cxk_left)
-        self.times.append(2)
+        self.times.append(3)
 
         cxk_right = Twist()
         cxk_right.linear.x = 0
-        cxk_right.angular.z = -1
+        cxk_right.angular.z = -0.8
         self.moves.append(cxk_right)
-        self.times.append(2)
-        
+        self.times.append(3)
+
         tri_move = Twist()
         tri_move.linear.x = 0.3
         self.moves.append(tri_move)
@@ -165,26 +169,26 @@ class Movements():
         self.times.append(40)
 
         right_45 = Twist()
-        right_45.linear.x = 0.25
-        right_45.angular.z = 1.5
+        right_45.linear.x = 0.2
+        right_45.angular.z = 0.3
         self.moves.append(right_45)
         self.times.append(20)
 
         reverse_45 = Twist()
-        reverse_45.linear.x = -0.25
-        reverse_45.angular.z = -1.5
+        reverse_45.linear.x = -0.2
+        reverse_45.angular.z = -0.3
         self.moves.append(reverse_45)
         self.times.append(20)
 
         left_45 = Twist()
-        left_45.linear.x = 0.25
-        left_45.angular.z = -1.5
+        left_45.linear.x = 0.2
+        left_45.angular.z = -0.3
         self.moves.append(left_45)
         self.times.append(20)
 
         lreverse_45 = Twist()
-        lreverse_45.linear.x = -0.25
-        lreverse_45.angular.z = 1.5
+        lreverse_45.linear.x = -0.2
+        lreverse_45.angular.z = 0.3
         self.moves.append(lreverse_45)
         self.times.append(20)
 
@@ -216,9 +220,22 @@ class Movements():
         elif data.data == 'dance':
             self.moving = True
             self.move_state = 7
+        elif data.data == 'left':
+            self.moving = True
+            self.move_state = 8
+        elif data.data == 'left_back':
+            self.moving = True
+            self.move_state = 9
+        elif data.data == 'right':
+            self.moving = True
+            self.move_state = 10
+        elif data.data == 'right_back':
+            self.moving = True
+            self.move_state = 11
+
 
 if __name__ == "__main__":
     # try:
     mms = Movements()
     # except:
-        # rospy.loginfo("Movements node terminated.")
+    # rospy.loginfo("Movements node terminated.")

@@ -23,52 +23,52 @@ import rospy
 from geometry_msgs.msg import Twist
 from math import radians
 
+
 class CXK():
     def __init__(self):
         # initiliaze
         rospy.init_node('caixukun', anonymous=False)
 
-        # What to do you ctrl + c    
+        # What to do you ctrl + c
         rospy.on_shutdown(self.shutdown)
-        
-        self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
-     
-	# 5 HZ
-        r = rospy.Rate(5);
 
-	# create two different Twist() variables.  One for moving forward.  One for turning 45 degrees.
+        self.cmd_vel = rospy.Publisher(
+            'cmd_vel_mux/input/navi', Twist, queue_size=10)
+
+        # 5 HZ
+        r = rospy.Rate(5)
+
+        # create two different Twist() variables.  One for moving forward.  One for turning 45 degrees.
 
         # let's dance.
         right_cmd = Twist()
         right_cmd.linear.x = 0
-	right_cmd.angular.z = 1
-	
+        right_cmd.angular.z = 1
+
         left_cmd = Twist()
         left_cmd.linear.x = 0
-	left_cmd.angular.z = -1
-	
+        left_cmd.angular.z = -1
 
-	#two keep drawing squares.  Go forward for 2 seconds (10 x 5 HZ) then turn for 2 second
+        # two keep drawing squares.  Go forward for 2 seconds (10 x 5 HZ) then turn for 2 second
         while not rospy.is_shutdown():
-	    rospy.loginfo("Dancing left.")
-            for x in range(0,1):
+            rospy.loginfo("Dancing left.")
+            for x in range(0, 1):
                 self.cmd_vel.publish(right_cmd)
                 r.sleep()
-	    rospy.loginfo("Dancing right.")
-            for x in range(0,1):
+            rospy.loginfo("Dancing right.")
+            for x in range(0, 1):
                 self.cmd_vel.publish(left_cmd)
-                r.sleep()            
-        
+                r.sleep()
+
     def shutdown(self):
         # stop turtlebot
         rospy.loginfo("Stop Drawing Squares")
         self.cmd_vel.publish(Twist())
         rospy.sleep(1)
- 
+
+
 if __name__ == '__main__':
     try:
         CXK()
     except:
         rospy.loginfo("node terminated.")
-
-

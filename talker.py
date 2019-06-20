@@ -14,7 +14,11 @@ commands = {
     'r': 'rotate',
     't': 'go',
     'y': 'back',
-    'd': 'dance'
+    'd': 'dance',
+    ',': 'left',
+    '.': 'right',
+    'm': 'left_back',
+    '/': 'right_back'
 }
 
 
